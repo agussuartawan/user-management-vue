@@ -7,14 +7,14 @@ import { format } from '@/utils/dateUtil.ts'
 import { join } from '@/utils/stringUtil.ts'
 import SimpleSpinner from '@/components/spinners/SimpleSpinner.vue'
 import HeadingH1 from '@/components/HeadingH1.vue'
-import axios from 'axios'
-import { data } from 'autoprefixer'
 import DangerAlert from '@/components/alerts/DangerAlert.vue'
+import userSession, { setFullName } from '@/utils/Session.ts'
 
 export default {
     components: { DangerAlert, HeadingH1, SimpleSpinner, DarkButton, Navbar, BodyContainer },
     mounted() {
         this.fetch()
+        this.session = userSession
     },
     data() {
         return {
@@ -23,6 +23,7 @@ export default {
             loading: true,
             showForm: false,
             errorMessage: '',
+            session: {},
             form: {
                 fullName: null,
                 email: null,
@@ -53,8 +54,12 @@ export default {
         },
         updateProfile() {
             axiosInstance
-                .put('/api/v1/master/user/update', this.form)
-                .then((res) => console.log(res))
+                .put(`/api/v1/master/user/${this.session.userId}`, this.form)
+                .then((res) => {
+                    console.log(res)
+                    this.showForm = false
+                    setFullName(this.form.fullName)
+                })
                 .catch((err) => {
                     console.log(err)
                     if (err.response.data) {

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import userSession from '@/utils/Session'
 
-const cookies = useCookies()
-const session: Session = cookies.get('session')
+const session = userSession
 const baseURL = 'http://localhost:8179'
 const axiosInstance = axios.create({
     baseURL: baseURL

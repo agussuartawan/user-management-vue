@@ -1,4 +1,40 @@
-<script setup lang="ts"></script>
+<script>
+import userSession from '@/utils/Session.ts'
+import axiosInstance from '@/utils/axiosInstance.ts'
+import Swal from 'sweetalert2'
+
+export default {
+    mounted() {
+        const session = userSession
+        this.fullName = session.fullName
+        this.roles = session.roles
+    },
+    data() {
+        return {
+            fullName: '',
+            roles: ''
+        }
+    },
+    methods: {
+        logout() {
+            axiosInstance
+                .patch('/api/v1/auth/logout')
+                .then((res) => {
+                    console.log(res.data)
+                    this.$router.push('/login')
+                })
+                .catch((err) => {
+                    console.log(err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'something wrong, please try again',
+                        icon: 'error'
+                    })
+                })
+        }
+    }
+}
+</script>
 
 <template>
     <button
@@ -30,6 +66,12 @@
         aria-label="Sidebar"
     >
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+            <div class="ml-2 mb-1">
+                <span class="text-xl text-gray-50">{{ fullName }}</span
+                ><br />
+                <small class="text-gray">{{ roles }}</small>
+            </div>
+            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-500" />
             <ul class="space-y-2 font-medium">
                 <li>
                     <RouterLink
@@ -120,8 +162,8 @@
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink
-                        to="/"
+                    <button
+                        @click.prevent="logout"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -140,7 +182,7 @@
                             />
                         </svg>
                         <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
-                    </RouterLink>
+                    </button>
                 </li>
             </ul>
         </div>
