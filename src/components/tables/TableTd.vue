@@ -1,9 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="p-4 ml-64">
+    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
         <slot></slot>
-    </div>
+    </td>
 </template>
 
 <style scoped></style>

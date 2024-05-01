@@ -1,9 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="p-4 ml-64">
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <slot></slot>
-    </div>
+    </tr>
 </template>
 
 <style scoped></style>
